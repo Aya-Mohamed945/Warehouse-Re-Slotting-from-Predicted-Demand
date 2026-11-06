@@ -1,0 +1,5 @@
+Layout,Pair violations,Total excess distance,Incompatible aisle pairs
+Random,156,857,452
+Last-week demand,123,539,448
+NN demand,139,641,473
+NN + Swaps,37,65,2

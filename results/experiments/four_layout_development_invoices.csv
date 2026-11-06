@@ -1,0 +1,5 @@
+Layout,Invoices evaluated,Product-line coverage (%),Total picker distance,Average distance per invoice,Pair violations,Total excess distance,Incompatible aisle pairs,Basic rules OK (slots/capacity/heavy),Strictly valid (all hard constraints),Improvement vs Random (%),Improvement vs NN demand (%)
+Random,1000,100.0,33668,33.668,156,857,452,True,False,0.0,-15.9
+Last-week demand,1000,100.0,28922,28.922,123,539,448,True,False,14.1,0.43
+NN demand,1000,100.0,29048,29.048,139,641,473,True,False,13.72,0.0
+NN + Swaps,1000,100.0,27488,27.488,37,65,2,True,False,18.36,5.37

@@ -1,0 +1,25 @@
+Test,Scope,Result,Details
+"Product assignment (all 120 assigned, none missing) - 4 layouts",basic,PASS,"{'Random': 120, 'Last-week demand': 120, 'NN demand': 120, 'NN + Swaps': 120}"
+Unique slots (120 distinct valid slots) - 4 layouts,basic,PASS,no duplicate or unknown slot ids
+Capacity,basic,PASS,"0 violations in all four layouts (NB: every slot has capacity 100 and needs are 1-80, so the rule never binds)"
+Heavy products on low shelves,basic,PASS,0 violations in all four layouts
+"Category compatibility function (symmetric, matches specified table)",integration,PASS,10 unordered pairs + 4 same-category cases checked
+Category-aisle rule on the 4 full 120-product layouts,strict,FAIL,"incompatible same-aisle product pairs: {'Random': 452, 'Last-week demand': 448, 'NN demand': 473, 'NN + Swaps': 2}. Counting certificate says a violation-free 120-layout is IMPOSSIBLE: 31 cleaning products need whole aisles free of food/fragile, 61 food+fragile products need the remaining aisles; no split of 4 aisles ([30, 30, 30, 30] slots) holds both (best slack A/B = (-1, 29))"
+"CSP-solved layouts (strict rules, 60/90 products) satisfy ALL hard constraints",integration,PASS,"8 solved runs, all validated with validate_layout (incl. hard pair distances and aisle rule)"
+INFEASIBLE BY CERTIFICATE status appears exactly where the exact certificate fails,strict,PASS,"certificate feasible? {60: True, 90: True, 120: False}; rows marked infeasible: [120]"
+Certificate inputs recomputed from the real data,integration,PASS,"cleaning=31, food+fragile=61, aisles=[0, 1, 2, 3] x 30 slots; strict 120-product layout feasible = False"
+Layouts reported 'valid' really are valid,integration,PASS,"{'Random': False, 'Last-week demand': False, 'NN demand': False, 'NN + Swaps': False}"
+Hard co-purchase constraints satisfied on the 4 full layouts,strict,FAIL,"pair violations remaining (soft objective, reported separately): {'Random': 156, 'Last-week demand': 123, 'NN demand': 139, 'NN + Swaps': 37}"
+Search validity (every swap keeps unique slot/capacity/heavy and does not add aisle conflicts),integration,PASS,Greedy Best-First: 2 swaps replayed; Bounded UCS: 2 swaps replayed; A* variant: 2 swaps replayed
+All four layouts use the same product set,integration,PASS,120 products
+"Test-order evaluation: same invoices, same simulator for all 4 layouts",integration,PASS,4846 invoices each; coverage [100.0]%
+Four-layout table reproduces from a fresh evaluation,integration,PASS,recomputed average distances equal the exported table
+"No duplicated (invoice, product) lines counted",integration,PASS,"27881 unique lines, 5846 invoices"
+Development / holdout invoices disjoint and exhaustive,integration,PASS,1000 dev + 4846 holdout
+No test-order information in the optimiser / search / CSP objective (final NN + Swaps),integration,PASS,"Objective, SA and Search use only predicted demand + training pair constraints. The LEGACY optimiser does tune on 1000 dev invoices (kept separately)."
+Training/test leakage inside forecasts.csv & copurchase_pairs.csv,integration,NOT VERIFIABLE,"Training window of these Person-1 files was not supplied, so this cannot be verified here."
+CSP algorithms compared on identical problems,integration,PASS,"same pair-constraint set per (protocol, size) for BT / BT+FC / BT+FC+AC-3"
+CSV exports exist with expected columns,integration,PASS,9 files checked
+Figures exist (PNG) with their underlying data CSV,integration,PASS,11 figures checked
+Figure data equals the experiment result tables (no invented values),integration,PASS,"four-layout, search and CSP figure data compared with exported results"
+"Automated unit tests (tests/ folder, 39 tests)",unit,PASS,"39 passed, 0 failed []"

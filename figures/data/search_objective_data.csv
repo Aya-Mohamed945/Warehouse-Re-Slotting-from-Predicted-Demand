@@ -1,0 +1,4 @@
+Algorithm,initial_objective,final_objective,target_objective
+Greedy Best-First,32.3756,28.4702,29.138
+Bounded UCS,32.3756,28.4204,29.138
+A* variant,32.3756,28.4204,29.138

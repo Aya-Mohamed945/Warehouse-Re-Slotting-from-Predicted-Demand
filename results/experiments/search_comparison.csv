@@ -1,0 +1,4 @@
+Algorithm,initial_objective,final_objective,target_objective,initial_wwd,final_wwd,initial_pair_violations,final_pair_violations,initial_excess,final_excess,swaps,expanded_nodes,generated_nodes,seconds,target_reached,stop_reason,heuristic_delta,final_hard_rules_ok,final_fully_valid,final_incompatible_aisle_pairs
+Greedy Best-First,32.3756,28.4702,29.138,6.7356,6.7502,139,124,641,543,2,2,993,0.013,True,goal reached,,True,False,465
+Bounded UCS,32.3756,28.4204,29.138,6.7356,6.7404,139,124,641,542,2,300,103106,2.127,True,expansion budget reached,,True,False,465
+A* variant,32.3756,28.4204,29.138,6.7356,6.7404,139,124,641,542,2,52,23921,0.312,True,goal reached,2.78533,True,False,465

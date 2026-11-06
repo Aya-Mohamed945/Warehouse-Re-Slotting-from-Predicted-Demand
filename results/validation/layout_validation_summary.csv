@@ -1,0 +1,5 @@
+layout,total_products,assigned_products,missing,duplicate_slots,capacity_violations,heavy_shelf_violations,incompatible_aisle_pairs,pair_violations,total_excess_distance,valid
+Random,120,120,0,0,0,0,452,156,857,False
+Last-week demand,120,120,0,0,0,0,448,123,539,False
+NN demand,120,120,0,0,0,0,473,139,641,False
+NN + Swaps,120,120,0,0,0,0,2,37,65,False

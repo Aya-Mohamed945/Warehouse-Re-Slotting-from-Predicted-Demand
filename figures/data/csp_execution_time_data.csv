@@ -1,0 +1,22 @@
+Products,Algorithm,Protocol,Status,Time (s)
+60,BT,A (20/30/40 strongest pairs),TIME LIMIT REACHED,20.0001
+60,BT+FC,A (20/30/40 strongest pairs),SOLVED,0.0019
+60,BT+FC+AC-3,A (20/30/40 strongest pairs),SOLVED,0.0275
+90,BT,A (20/30/40 strongest pairs),TIME LIMIT REACHED,20.0001
+90,BT+FC,A (20/30/40 strongest pairs),SOLVED,0.0041
+90,BT+FC+AC-3,A (20/30/40 strongest pairs),SOLVED,0.1043
+120,BT,A (20/30/40 strongest pairs),INFEASIBLE BY CERTIFICATE,0.0
+120,BT+FC,A (20/30/40 strongest pairs),INFEASIBLE BY CERTIFICATE,0.0
+120,BT+FC+AC-3,A (20/30/40 strongest pairs),INFEASIBLE BY CERTIFICATE,0.0
+60,BT,B (30 strongest pairs),TIME LIMIT REACHED,20.0001
+60,BT+FC,B (30 strongest pairs),SOLVED,0.0242
+60,BT+FC+AC-3,B (30 strongest pairs),SOLVED,0.6041
+90,BT,B (30 strongest pairs),TIME LIMIT REACHED,20.0002
+90,BT+FC,B (30 strongest pairs),SOLVED,0.0086
+90,BT+FC+AC-3,B (30 strongest pairs),SOLVED,0.1375
+120,BT,B (30 strongest pairs),INFEASIBLE BY CERTIFICATE,0.0
+120,BT+FC,B (30 strongest pairs),INFEASIBLE BY CERTIFICATE,0.0
+120,BT+FC+AC-3,B (30 strongest pairs),INFEASIBLE BY CERTIFICATE,0.0
+120,BT,"Diagnostic: 120 products, aisle rule RELAXED",TIME LIMIT REACHED,45.0001
+120,BT+FC,"Diagnostic: 120 products, aisle rule RELAXED",SOLVED,25.1562
+120,BT+FC+AC-3,"Diagnostic: 120 products, aisle rule RELAXED",TIME LIMIT REACHED,45.0001

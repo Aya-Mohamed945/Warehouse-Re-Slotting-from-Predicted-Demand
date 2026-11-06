@@ -1,0 +1,4 @@
+Algorithm,expanded_nodes
+Greedy Best-First,2
+Bounded UCS,300
+A* variant,52

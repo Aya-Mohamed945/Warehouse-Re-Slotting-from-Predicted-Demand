@@ -1,0 +1,5 @@
+Layout,Invoices evaluated,Average distance per invoice,Total picker distance
+Random,4846,33.15,160646
+Last-week demand,4846,28.963,140356
+NN demand,4846,29.028,140668
+NN + Swaps,4846,27.577,133640
