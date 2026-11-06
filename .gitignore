@@ -46,3 +46,5 @@ data/nn_evaluation.csv
 
 # Results cache (generated during runs)
 results/experiments/_cache/
+
+notebook/
