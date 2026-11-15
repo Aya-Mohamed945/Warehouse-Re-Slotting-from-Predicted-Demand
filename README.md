@@ -133,7 +133,23 @@ This script loads the generated data and runs the integrated warehouse optimizat
 - Warehouse layout evaluation.
 - Results generation and visualization.
 
-### 3. Run Unit Tests
+### 3. Run the Focused Live Demo (5 minutes)
+
+For the presentation demo, run the focused entry point:
+
+```bash
+python demo_live.py
+```
+
+It demonstrates the three requested items without rerunning the full experiment suite:
+
+1. A real Greedy Best-First Search trace with each selected swap and objective value.
+2. BT vs BT+FC vs BT+FC+AC-3, including a small domain-pruning trace.
+3. NN OFF (last-week demand) vs NN ON (predicted demand) evaluated on the same held-out invoices.
+
+The script uses the existing CSV files in `data/`. It does not retrain the Neural Network or overwrite the experiment results.
+
+### 4. Run Unit Tests
 
 To execute the test suite, run:
 

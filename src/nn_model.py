@@ -47,14 +47,29 @@ def build_supervised_data(weekly_full, top_products, train_weeks, val_weeks, tes
     
     return X, y, meta, (train_mask, val_mask, test_mask)
 
+
 def train_nn(X, y, masks):
     train_mask, val_mask, test_mask = masks
+
+    # Check that all splits contain samples
+    if train_mask.sum() == 0:
+        raise ValueError("Training set is empty.")
+
+    if val_mask.sum() == 0:
+        raise ValueError("Validation set is empty.")
+
+    if test_mask.sum() == 0:
+        raise ValueError("Test set is empty.")
+
+    # Fit scaler on TRAINING data only
     scaler = StandardScaler()
+
     X_train_scaled = scaler.fit_transform(X[train_mask])
     X_val_scaled = scaler.transform(X[val_mask])
-    X_test_scaled = scaler.transform(X[test_mask])
-    y_train, y_val = y[train_mask], y[val_mask]
-    
+
+    y_train = y[train_mask]
+    y_val = y[val_mask]
+
     model = tf.keras.Sequential([
         tf.keras.Input(shape=(X_train_scaled.shape[1],)),
         tf.keras.layers.Dense(64, activation="relu"),
@@ -62,11 +77,29 @@ def train_nn(X, y, masks):
         tf.keras.layers.Dense(32, activation="relu"),
         tf.keras.layers.Dense(1, activation="linear")
     ])
-    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
-    
-    early_stop = tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=8, restore_best_weights=True)
-    history = model.fit(X_train_scaled, y_train, validation_data=(X_val_scaled, y_val), epochs=80, batch_size=64, callbacks=[early_stop], verbose=0)
-    
+
+    model.compile(
+        optimizer="adam",
+        loss="mse",
+        metrics=["mae"]
+    )
+
+    early_stop = tf.keras.callbacks.EarlyStopping(
+        monitor="val_loss",
+        patience=8,
+        restore_best_weights=True
+    )
+
+    history = model.fit(
+        X_train_scaled,
+        y_train,
+        validation_data=(X_val_scaled, y_val),
+        epochs=80,
+        batch_size=64,
+        callbacks=[early_stop],
+        verbose=0
+    )
+
     return model, scaler, history
 
 def evaluate_nn(model, scaler, X_test, y_test_actual, meta_test):
@@ -86,29 +119,77 @@ def evaluate_nn(model, scaler, X_test, y_test_actual, meta_test):
     }).T
     return results
 
-def forecast_next_week(model, scaler, weekly_full, all_weeks, top_products):
-    next_week = pd.Timestamp(all_weeks[-1]) + pd.Timedelta(days=7)
+
+def forecast_next_week(
+    model,
+    scaler,
+    weekly_full,
+    all_weeks,
+    top_products,
+    forecast_origin
+):
+    forecast_origin = pd.Timestamp(forecast_origin)
+
+    next_week = forecast_origin + pd.Timedelta(days=7)
     next_week_number = int(next_week.isocalendar().week)
+
     forecast_rows = []
-    
+
     for product in top_products:
-        product_df = weekly_full[weekly_full["stockcode"] == product].sort_values("week").reset_index(drop=True)
+
+        product_df = (
+            weekly_full[
+                (weekly_full["stockcode"] == product)
+                & (weekly_full["week"] <= forecast_origin)
+            ]
+            .sort_values("week")
+            .reset_index(drop=True)
+        )
+
+        # Use only the 8 weeks available before the test period
         last_8 = product_df.tail(LOOKBACK)
+
+        if len(last_8) < LOOKBACK:
+            raise ValueError(
+                f"Not enough historical weeks for product {product}"
+            )
+
         demand_history = last_8["demand"].to_numpy(dtype=np.float32)
         log_history = np.log1p(demand_history)
-        
+
         features = np.concatenate([
             log_history,
-            np.array([next_week_number, last_8["mean_price"].mean(), last_8["invoice_counts"].mean()], dtype=np.float32)
+            np.array([
+                next_week_number,
+                last_8["mean_price"].mean(),
+                last_8["invoice_counts"].mean()
+            ], dtype=np.float32)
         ]).reshape(1, -1)
-        
-        pred_log = model.predict(scaler.transform(features), verbose=0)[0, 0]
-        predicted_demand = max(0.0, float(np.expm1(pred_log)))
-        
-        forecast_rows.append({"product_id": product, "predicted_demand": round(predicted_demand, 2), "last_week_demand": float(demand_history[-1])})
-        
-    forecasts = pd.DataFrame(forecast_rows).sort_values("predicted_demand", ascending=False).reset_index(drop=True)
+
+        pred_log = model.predict(
+            scaler.transform(features),
+            verbose=0
+        )[0, 0]
+
+        predicted_demand = max(
+            0.0,
+            float(np.expm1(pred_log))
+        )
+
+        forecast_rows.append({
+            "product_id": product,
+            "predicted_demand": round(predicted_demand, 2),
+            "last_week_demand": float(demand_history[-1])
+        })
+
+    forecasts = (
+        pd.DataFrame(forecast_rows)
+        .sort_values("predicted_demand", ascending=False)
+        .reset_index(drop=True)
+    )
+
     return forecasts
+
 
 def build_copurchase_pairs(df, top_products, train_weeks):
     train_transactions = df[(df["invoicedate"] >= train_weeks[0]) & (df["invoicedate"] < train_weeks[-1] + pd.Timedelta(days=7)) & (df["stockcode"].isin(top_products))].copy()

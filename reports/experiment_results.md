@@ -47,9 +47,9 @@ Results: BT: TIME LIMIT REACHED (45.0001 s); BT+FC: SOLVED (25.1562 s); BT+FC+AC
 ## 4. Search comparison (start NN demand, J = WWD + 0.04 x pair excess, depth <= 6, 300 expansions)
 | Algorithm | initial_objective | final_objective | target_objective | initial_wwd | final_wwd | initial_pair_violations | final_pair_violations | swaps | expanded_nodes | generated_nodes | seconds | target_reached | final_hard_rules_ok |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Greedy Best-First | 32.38 | 28.47 | 29.14 | 6.736 | 6.75 | 139 | 124 | 2 | 2 | 993 | 0.013 | True | True |
-| Bounded UCS | 32.38 | 28.42 | 29.14 | 6.736 | 6.74 | 139 | 124 | 2 | 300 | 103106 | 2.127 | True | True |
-| A* variant | 32.38 | 28.42 | 29.14 | 6.736 | 6.74 | 139 | 124 | 2 | 52 | 23921 | 0.312 | True | True |
+| Greedy Best-First | 32.38 | 28.47 | 29.14 | 6.736 | 6.75 | 139 | 124 | 2 | 2 | 993 | 0.032 | True | True |
+| Bounded UCS | 32.38 | 28.42 | 29.14 | 6.736 | 6.74 | 139 | 124 | 2 | 300 | 103106 | 4.586 | True | True |
+| A* variant | 32.38 | 28.42 | 29.14 | 6.736 | 6.74 | 139 | 124 | 2 | 52 | 23921 | 0.709 | True | True |
 
 ## 5. Four-layout comparison on the reserved holdout (4846 invoices)
 | Layout | Invoices evaluated | Product-line coverage (%) | Total picker distance | Average distance per invoice | Pair violations | Total excess distance | Incompatible aisle pairs | Improvement vs Random (%) | Improvement vs NN demand (%) | Basic rules OK (slots/capacity/heavy) | Strictly valid (all hard constraints) |
@@ -61,7 +61,7 @@ Results: BT: TIME LIMIT REACHED (45.0001 s); BT+FC: SOLVED (25.1562 s); BT+FC+AC
 
 Same layouts on the 1000 development invoices (reporting only, never used for tuning): see `results/experiments/four_layout_development_invoices.csv`.
 
-NN + Swaps optimiser run: {'iterations': 100000, 'accepted_moves': 7812, 'rejected_hard_constraint': 66198, 'initial_objective': 32.3756, 'final_objective': 8.7284, 'final_wwd': 6.1284, 'final_pair_violations': 37, 'final_total_excess': 65, 'seconds': 0.45}.
+NN + Swaps optimiser run: {'iterations': 100000, 'accepted_moves': 7812, 'rejected_hard_constraint': 66198, 'initial_objective': 32.3756, 'final_objective': 8.7284, 'final_wwd': 6.1284, 'final_pair_violations': 37, 'final_total_excess': 65, 'seconds': 1.01}.
 
 Historical reference (earlier notebook, not recomputed here): initial 29.344 average distance / 121 violations; joint optimisation 27.006 / 22 violations.
 

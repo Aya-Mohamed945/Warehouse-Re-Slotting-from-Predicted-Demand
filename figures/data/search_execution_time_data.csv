@@ -1,4 +1,4 @@
 Algorithm,seconds
-Greedy Best-First,0.013
-Bounded UCS,2.127
-A* variant,0.312
+Greedy Best-First,0.032
+Bounded UCS,4.586
+A* variant,0.709
